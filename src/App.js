@@ -10,7 +10,7 @@ function App() {
 	useEffect(() => {
 		axios
 			.get(
-				'http://api.weatherapi.com/v1/current.json?key=a4ab2c97c17d41b8a99154701211304&q=Saint-Petersburg',
+				'https://api.weatherapi.com/v1/current.json?key=a4ab2c97c17d41b8a99154701211304&q=Saint-Petersburg',
 			)
 			.then(data => {
 				setWeather(data.data);
@@ -33,7 +33,7 @@ function App() {
 		});
 		axios
 			.get(
-				`http://api.weatherapi.com/v1/current.json?key=a4ab2c97c17d41b8a99154701211304&q=${input}`,
+				`https://api.weatherapi.com/v1/current.json?key=a4ab2c97c17d41b8a99154701211304&q=${input}`,
 			)
 			.then(data => {
 				setWeather(data.data);
