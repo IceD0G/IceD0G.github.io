@@ -5,44 +5,62 @@ import axios from 'axios';
 function App() {
 	const [weather, setWeather] = useState(null);
 	const [input, setInput] = useState('');
+	const [time, setTime] = useState([]);
+	const [open, setOpen] = useState(false);
 	useEffect(() => {
 		axios
 			.get(
-				'http://api.weatherapi.com/v1/current.json?key=a4ab2c97c17d41b8a99154701211304&q=London',
+				'http://api.weatherapi.com/v1/current.json?key=a4ab2c97c17d41b8a99154701211304&q=Saint-Petersburg',
 			)
 			.then(data => {
 				setWeather(data.data);
-				console.log(data.data);
+				setTime(data.data.current.last_updated.split(' '));
 			})
 			.catch(err => console.log(err));
 	}, []);
 	//event
 	const weatheInput = e => {
 		setInput(e.target.value);
+		if (e.target.value === '') {
+			setOpen(!open);
+		}
 	};
-	const searchWeather = () => {
+	const searchWeather = e => {
+		e.preventDefault();
+		axios.interceptors.request.use(test => {
+			console.log(`req: ${test}`);
+			return test;
+		});
 		axios
 			.get(
 				`http://api.weatherapi.com/v1/current.json?key=a4ab2c97c17d41b8a99154701211304&q=${input}`,
 			)
 			.then(data => {
 				setWeather(data.data);
+				setTime(data.data.current.last_updated.split(' '));
+				setOpen(!open);
 			})
 			.catch(err => console.log(err));
 	};
 	return (
-		<div>
+		<div className='container'>
 			{weather && (
-				<div>
-					<input type='text' onChange={weatheInput} />
-					<button onClick={searchWeather}>Search city</button>
-					<div className='weather-info'>
+				<div className='weather'>
+					<form action=''>
+						<input type='text' onChange={weatheInput} />
+						<button onClick={searchWeather}>Search city</button>
+					</form>
+					<div className={`weather-info ${open ? 'show' : ''}`}>
 						<h1>{weather.location.country}</h1>
 						<h2>{weather.location.name}</h2>
-						<h2>{weather.location.region}</h2>
-						<h4>{weather.current.condition.text}</h4>
-						<img src={weather.current.condition.icon} alt='' />
-						<h4>Weather is {weather.current.temp_c} celsius</h4>
+						<div className='condition'>
+							<h4>{weather.current.condition.text}</h4>
+							<img src={weather.current.condition.icon} alt='' />
+						</div>
+
+						<h4>
+							In {time[1]} weather was {weather.current.temp_c} °C
+						</h4>
 					</div>
 				</div>
 			)}
