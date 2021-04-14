@@ -61,3 +61,16 @@ button:hover {
 	display: flex;
 	align-items: center;
 }
+@media screen and (max-width: 768px) {
+	input {
+		width: 50%;
+	}
+	.container {
+		padding: 5rem;
+	}
+}
+@media screen and (max-width: 768px) {
+	.container {
+		padding: 2.5rem;
+	}
+}
