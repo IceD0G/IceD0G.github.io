@@ -38,7 +38,12 @@ function App() {
 			.then(data => {
 				setWeather(data.data);
 				setTime(data.data.current.last_updated.split(' '));
-				setOpen(!open);
+				if (weather !== '') {
+					setOpen(!open);
+					// if (!open) {
+					// 	setOpen(!open);
+					// }
+				}
 			})
 			.catch(err => console.log(err));
 	};
